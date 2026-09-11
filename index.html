@@ -16,6 +16,7 @@
   margin: 0; 
   padding: 0; 
   font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif; 
+  -webkit-tap-highlight-color: transparent;
 }
 
 body { 
@@ -236,6 +237,7 @@ body::after {
   cursor: pointer; 
   border: 1px solid transparent;
   transition: all 0.25s ease; 
+  touch-action: manipulation;
 }
 
 .nav-item:hover { 
@@ -399,6 +401,7 @@ body::after {
   justify-content: space-between; 
   align-items: center; 
   transition: all 0.2s ease; 
+  touch-action: manipulation;
 }
 
 .btn-dropdown-trigger:hover { 
@@ -409,13 +412,12 @@ body::after {
 
 
 /* ==========================================================
-   DROPDOWN MENU - PERBAIKAN UTAMA
+   DROPDOWN MENU
    ========================================================== */
 
 .dropdown-menu-list { 
   display: none; 
 
-  /* DROPDOWN SEKARANG MEMBUKA KE BAWAH */
   position: absolute; 
   top: 100%;
   bottom: auto;
@@ -435,15 +437,13 @@ body::after {
 
   box-shadow: 0 0 15px rgba(0, 240, 255, 0.4); 
 
-  /* Supaya berada di atas elemen lain */
   z-index: 9999; 
 
-  /* PENTING: dropdown bisa di-scroll */
   max-height: 360px;
   overflow-y: auto;
   overflow-x: hidden;
+  -webkit-overflow-scrolling: touch;
 
-  /* Tampilan scrollbar Firefox */
   scrollbar-width: thin;
   scrollbar-color: #00f0ff rgba(255, 255, 255, 0.08);
 }
@@ -485,12 +485,12 @@ body::after {
   align-items: flex-start; 
   gap: 8px; 
 
-  padding: 9px 12px; 
+  padding: 10px 14px; 
 
   color: #f8fafc; 
   text-decoration: none; 
 
-  font-size: 11px; 
+  font-size: 12px; 
   font-weight: 700; 
   line-height: 1.35;
 
@@ -503,7 +503,8 @@ body::after {
   border-bottom: none; 
 }
 
-.dropdown-menu-list a:hover { 
+.dropdown-menu-list a:hover,
+.dropdown-menu-list a:active { 
   background: #00f0ff; 
   color: #000; 
 }
@@ -525,11 +526,7 @@ body::after {
 .game-footer .dropdown-menu-list {
   width: 290px;
   max-width: 80vw;
-
-  /* Tinggi maksimal daftar soal */
   max-height: 360px;
-
-  /* Posisi dari sisi kanan tombol */
   left: auto;
   right: 0;
 }
@@ -599,6 +596,7 @@ body::after {
   display: flex; 
   align-items: center; 
   gap: 6px; 
+  touch-action: manipulation;
 }
 
 .btn-main-dropdown:hover { 
@@ -735,6 +733,7 @@ body::after {
   width: 100%; 
   box-shadow: 0 0 15px rgba(0, 240, 255, 0.6); 
   transition: all 0.2s ease; 
+  touch-action: manipulation;
 }
 
 .btn-simpan:hover { 
@@ -880,7 +879,7 @@ body::after {
 
 
 /* ==========================================================
-   RESPONSIVE
+   RESPONSIVE & OPTIMASI KHUSUS HP (TAMPILAN & PERFORMA)
    ========================================================== */
 
 @media screen and (max-width: 900px) {
@@ -896,12 +895,34 @@ body::after {
 
 @media screen and (max-width: 768px) {
 
-  body { 
-    padding: 6px; 
+  /* 1. MATIKAN ANIMASI BERAT & REDUKSI BLUR BIAR RINGAN DI HP */
+  body::before {
+    animation: none !important;
+    filter: blur(40px) !important;
+    opacity: 0.6;
   }
 
-  .app-container { 
-    border-radius: 14px; 
+  body::after {
+    animation: none !important;
+    opacity: 0.4;
+  }
+
+  .galaxy-bg {
+    animation: none !important;
+  }
+
+  .terompah-logo-box {
+    animation: none !important;
+  }
+
+  .app-container {
+    backdrop-filter: blur(8px) !important;
+    -webkit-backdrop-filter: blur(8px) !important;
+    border-radius: 16px;
+  }
+
+  body { 
+    padding: 6px; 
   }
 
   .main-wrapper { 
@@ -911,13 +932,14 @@ body::after {
 
   .top-header { 
     flex-direction: column; 
-    gap: 10px; 
-    padding: 14px; 
+    gap: 12px; 
+    padding: 16px 12px; 
     text-align: center; 
   }
 
   .top-header h2 { 
-    font-size: 13px; 
+    font-size: 15px; 
+    line-height: 1.4;
   }
 
   .user-top { 
@@ -929,24 +951,38 @@ body::after {
     width: 100%; 
     border-right: none; 
     border-bottom: 2px solid #00f0ff; 
-    padding: 16px; 
+    padding: 16px 12px; 
   }
 
   .profile-summary img { 
-    width: 65px; 
-    height: 65px; 
+    width: 75px; 
+    height: 75px; 
   }
 
+  .profile-summary h3 {
+    font-size: 18px;
+  }
+
+  .badge-poin {
+    font-size: 14px;
+    padding: 8px 18px;
+  }
+
+  /* 2. OPTIMASI MENU NAVIGASI PADA HP */
   .nav-menu { 
     display: grid; 
     grid-template-columns: repeat(2, 1fr); 
-    gap: 8px; 
+    gap: 10px; 
   }
 
   .nav-item { 
     justify-content: center; 
-    padding: 10px 6px; 
-    font-size: 12px; 
+    padding: 12px 8px; 
+    font-size: 14px; 
+    font-weight: 800;
+    border-radius: 12px;
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(0, 240, 255, 0.2);
   }
 
   .mini-profile { 
@@ -954,59 +990,144 @@ body::after {
   }
 
   .content-area { 
-    padding: 16px; 
+    padding: 14px 10px; 
   }
 
+  .section-title {
+    font-size: 18px;
+    margin-bottom: 18px;
+  }
+
+  /* 3. OPTIMASI KARTU MATERI & GAME DI HP (FONT LEBIH BESAR) */
   .materi-grid, 
   .game-grid { 
     grid-template-columns: 1fr; 
-    gap: 14px; 
+    gap: 18px; 
+  }
+
+  .card-materi, .card-game {
+    padding: 20px 16px;
+  }
+
+  .card-header-mat h4, .card-game h4 {
+    font-size: 18px;
+    margin-bottom: 4px;
+  }
+
+  .card-header-mat p, .card-game p {
+    font-size: 13px;
+    line-height: 1.4;
+  }
+
+  .card-header-mat i {
+    font-size: 26px;
+  }
+
+  .game-tag {
+    font-size: 12px;
+    font-weight: 800;
+  }
+
+  .game-poin {
+    font-size: 12px;
+    line-height: 1.3;
+  }
+
+  .game-footer {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 12px;
+    margin-top: 16px;
+  }
+
+  /* 4. OPTIMASI TOMBOL & DROPDOWN AGAR SANGAT EASY-TO-CLICK */
+  .btn-dropdown-trigger, .btn-main-dropdown {
+    font-size: 14px;
+    padding: 12px 16px;
+    border-radius: 12px;
+    justify-content: center;
+    width: 100%;
+    min-height: 46px; /* Touch target standar HP */
+  }
+
+  .btn-main-dropdown {
+    box-shadow: 0 0 15px rgba(255, 255, 255, 0.4);
+  }
+
+  .dropdown-container {
+    width: 100%;
+  }
+
+  .dropdown-menu-list, 
+  .game-footer .dropdown-menu-list {
+    position: relative;
+    top: 6px;
+    left: 0;
+    right: 0;
+    width: 100% !important;
+    max-width: 100% !important;
+    max-height: 380px;
+    border-radius: 14px;
+    background: #080816;
+    border: 2px solid #00f0ff;
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.9);
+  }
+
+  .dropdown-menu-list a {
+    font-size: 14px;
+    font-weight: 700;
+    padding: 14px 14px; /* Area tap luas untuk jari */
+    min-height: 48px;
+    align-items: center;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.15);
+  }
+
+  .dropdown-menu-list a i {
+    font-size: 16px;
+    margin-top: 0;
+    color: #00f0ff;
   }
 
   #sectionPengaturan { 
-    padding: 16px; 
+    padding: 18px 14px; 
     max-width: 100%; 
   }
 
-
-  /* ========================================================
-     DROPDOWN GAME DI HP
-     ======================================================== */
-
-  .game-footer .dropdown-menu-list {
-    width: 260px;
-    max-width: 85vw;
-    max-height: 300px;
-    right: 0;
-    left: auto;
+  .form-group label {
+    font-size: 14px;
   }
 
-  .dropdown-menu-list {
-    max-height: 300px;
+  .form-group input {
+    font-size: 15px;
+    padding: 12px 14px;
   }
 
+  .btn-simpan {
+    font-size: 15px;
+    padding: 14px;
+  }
 
   /* RESPONSIVE BANNER HP */
-
   .beranda-banner-custom { 
-    min-height: 380px; 
-    padding: 30px 15px; 
+    min-height: 340px; 
+    padding: 24px 12px; 
   }
 
   .galaxy-bg { 
-    width: 450px; 
-    height: 450px; 
-    margin-top: -225px; 
-    margin-left: -225px; 
+    width: 320px; 
+    height: 320px; 
+    margin-top: -160px; 
+    margin-left: -160px; 
   }
 
   .terompah-logo-box { 
-    width: 120px; 
-    height: 160px; 
+    width: 110px; 
+    height: 140px; 
+    margin-bottom: 10px;
   }
 
   .banner-title { 
-    font-size: 24px; 
+    font-size: 22px; 
   }
 
   .banner-subtitle { 
@@ -1015,24 +1136,17 @@ body::after {
 }
 
 @media screen and (max-width: 480px) {
-
   .nav-menu { 
     grid-template-columns: 1fr; 
   }
 
   .user-top-info .name { 
-    font-size: 12px; 
+    font-size: 13px; 
   }
 
   .btn-logout { 
-    padding: 6px 12px; 
-    font-size: 11px; 
-  }
-
-  .game-footer .dropdown-menu-list {
-    width: 240px;
-    max-width: 90vw;
-    max-height: 280px;
+    padding: 8px 14px; 
+    font-size: 12px; 
   }
 }
   </style>
@@ -1096,7 +1210,7 @@ body::after {
           </div>
 
           <div class="banner-content">
-            <!-- LOGO TEROMPAH EMAS METALIK (LEBIH BESAR & TAJAM TANPA TERPOTONG) -->
+            <!-- LOGO TEROMPAH EMAS METALIK -->
             <div class="terompah-logo-box">
               <svg viewBox="0 0 300 450" xmlns="http://www.w3.org/2000/svg" class="terompah-svg">
                 <defs>
@@ -1196,7 +1310,7 @@ body::after {
         </div>
       </div>
 
-      <!-- HALAMAN 3: GAMENKU -->
+      <!-- HALAMAN 3: GAMEKU -->
       <div id="sectionGame" class="page-section">
         <div class="section-title">Semua Game Interaktif</div>
         <div class="game-grid">
@@ -1343,17 +1457,16 @@ body::after {
   const SCORE_SCRIPT_URL = "https://script.google.com/macros/s/AKfycby3R06uWEW5tXZhWhwDTo0QEcpHrHVkito-5rGYaqcfQsgpooyGg8j7fO0CXQw4AMmvpw/exec"; 
 
   // 2. LINK APPS SCRIPT UNTUK FOTO PROFIL & NAMA (PENGATURAN)
-  const PROFILE_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbz3t4RlI7yBnJHd6wqN6ZN82jyZSRu_pCay5otuAUP1is9uRUaT6bHTbU2mHGbUr47pMg/exec"; 
+  const PROFILE_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbzUEai3Nikgmk-z2KU052EWqkw8kXXQ7pRH8aXlSWCNTnwa3XICThj4L4pnopi2iyBo_w/exec"; 
 
   const USER_ID = "1";
-  let currentProfileName = ""; // Menyoroti nama profil yang aktif
+  let currentProfileName = "";
   let base64File = null;
   let fileName = "";
   let fileType = "";
   let scoreChartInstance = null;
   let globalScoresData = {}; 
 
-  // Kategori Sesuai Header Spreadsheet (Kolom B s/d U)
   const quizCategories = Array.from({length: 20}, (_, i) => `Soal Ke ${i + 1}`);
 
   window.addEventListener('DOMContentLoaded', () => {
@@ -1395,7 +1508,6 @@ body::after {
     }
   }
 
-  // MENGAMBIL FOTO & PROFIL DARI PROFILE_SCRIPT_URL
   function loadProfile() {
     fetch(`${PROFILE_SCRIPT_URL}?id=${USER_ID}`)
       .then(res => res.json())
@@ -1403,7 +1515,7 @@ body::after {
         if (data && data.nama) {
           currentProfileName = data.nama;
           updateUI(data.nama, data.kelas, data.fotoUrl);
-          fetchSpreadsheetScores(); // Panggil data score setelah profil didapatkan
+          fetchSpreadsheetScores();
         }
       })
       .catch(err => console.error("Gagal memuat profil:", err));
@@ -1430,7 +1542,6 @@ body::after {
     }
   }
 
-  // MENYIMPAN FOTO & PROFIL KE PROFILE_SCRIPT_URL
   document.getElementById('formPengaturan').addEventListener('submit', function(e) {
     e.preventDefault();
     const btn = document.getElementById('btnSimpan');
@@ -1455,7 +1566,7 @@ body::after {
       if (res.success) {
         status.innerText = "Profil berhasil tersimpan!"; status.style.color = "#00ff88";
         updateUI(res.data.nama, res.data.kelas, res.data.fotoUrl);
-        fetchSpreadsheetScores(); // Perbarui nilai setelah nama diubah
+        fetchSpreadsheetScores();
         base64File = null; fileName = ""; fileType = "";
         document.getElementById('inputFoto').value = "";
       } else {
@@ -1468,7 +1579,6 @@ body::after {
     });
   });
 
-  /* INISIALISASI & MEMBUAT GRAFIK CHART.JS */
   function initChart() {
     const ctx = document.getElementById('scoreChart').getContext('2d');
     const gradient = ctx.createLinearGradient(0, 0, 0, 300);
@@ -1502,7 +1612,6 @@ body::after {
     });
   }
 
-  // MENGAMBIL SKOR SISWA DARI SCORE_SCRIPT_URL
   function fetchSpreadsheetScores() {
     fetch(SCORE_SCRIPT_URL)
       .then(res => res.json())
@@ -1512,15 +1621,14 @@ body::after {
       })
       .catch(err => {
         console.error("Gagal mengambil data dari AppScript Skor:", err);
-        renderStudentChart(); // Tetap jalankan kalkulasi (menghasilkan nilai 0 jika gagal)
+        renderStudentChart();
       });
   }
 
   function renderStudentChart() {
-    let scores = Array(20).fill(0); // Default nilai NOL
+    let scores = Array(20).fill(0);
     const trimmedProfileName = currentProfileName.trim().toLowerCase();
 
-    // PENCocokan NAMA PROFIL DENGAN NAMA DI SPREADSHEET
     let matchedKey = Object.keys(globalScoresData).find(key => key.trim().toLowerCase() === trimmedProfileName);
 
     if (matchedKey && globalScoresData[matchedKey]) {
@@ -1529,13 +1637,11 @@ body::after {
       console.warn(`Nama profil "${currentProfileName}" tidak ditemukan di Spreadsheet. Nilai diset ke NOL.`);
     }
 
-    // Update grafik Chart.js
     if (scoreChartInstance) {
       scoreChartInstance.data.datasets[0].data = scores;
       scoreChartInstance.update();
     }
 
-    // Kalkulasi Statistik Otomatis
     const filledScores = scores.filter(s => s > 0);
     const sum = scores.reduce((a, b) => a + Number(b), 0);
     const avg = filledScores.length > 0 ? (sum / filledScores.length).toFixed(1) : "0.0";
@@ -1545,7 +1651,6 @@ body::after {
     document.getElementById('maxScoreVal').innerText = max;
     document.getElementById('totalQuizVal').innerText = `${filledScores.length} / 20`;
 
-    // Kalkulasi Poin/Coin Otomatis (Total Score x 10)
     const totalCoins = sum * 10;
     const coinElem = document.getElementById('userPoinVal');
     if (coinElem) {
